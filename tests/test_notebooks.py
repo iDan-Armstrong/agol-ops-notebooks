@@ -49,7 +49,15 @@ def test_no_credentials_in_cells(path: Path) -> None:
 
 def test_notebooks_in_sync_with_builder(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """The .ipynb files are generated; a hand-edit that skips the builder fails here."""
-    import scripts.build_notebooks as builder
+    # load the builder by file path: scripts/ is not a package, and bare
+    # `pytest` (as CI runs it) does not put the repo root on sys.path
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "build_notebooks", REPO / "scripts" / "build_notebooks.py"
+    )
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
 
     monkeypatch.setattr(builder, "OUT", tmp_path)
     builder.main()
