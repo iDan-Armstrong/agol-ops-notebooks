@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agolops"
+version = "0.2.0"
+description = "ArcGIS Online administration helpers + the hosted notebooks that run them"
+readme = "README.md"
+requires-python = ">=3.9"  # AGOL Hosted Notebook runtimes
+license = { text = "MIT" }
+authors = [{ name = "Daniel Armstrong" }]
+dependencies = []  # core is pure-Python; the 'arcgis' package is preinstalled in hosted notebooks
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6", "nbformat>=5.9"]
+agol = ["arcgis>=2.3"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "SIM"]
