@@ -1,6 +1,6 @@
 # agol-ops-notebooks — ArcGIS Online administration, tested
 
-![CI](https://github.com/USERNAME/agol-ops-notebooks/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/iDan-Armstrong/agol-ops-notebooks/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 Three **ArcGIS Online Hosted Notebooks** for the unglamorous work that keeps an org
