@@ -23,9 +23,32 @@ HEADER = (
     "Logic lives in the `agolops` package (tested in CI); cells only orchestrate.\n"
 )
 
+
+
+def install_cell(*repos: str) -> tuple[str, str]:
+    """A cell that installs the tested packages from GitHub.
+
+    A hosted notebook starts from a clean runtime with no git, so pip installs the
+    GitHub zip archive instead of a git+ URL. Written as Python, not !pip, so the
+    cell still parses in CI.
+    """
+    urls = ",\n".join(
+        f'    "https://github.com/iDan-Armstrong/{r}/archive/refs/heads/main.zip"' for r in repos
+    )
+    return ("code", f"""\
+# Install the tested logic (a hosted notebook starts from a clean runtime, without git)
+import subprocess
+import sys
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "-q",
+{urls},
+])""")
+
+
 CONTENT_AUDIT = [
     ("md", "# Content audit\n" + HEADER + "\nFlags stale, undocumented, unprotected, and "
      "orphaned items, and writes the findings to a CSV item for the content review meeting."),
+    install_cell("agol-ops-notebooks"),
     ("code", """\
 from arcgis.gis import GIS
 
@@ -63,6 +86,7 @@ LAYER_REFRESH = [
     ("md", "# Scheduled hosted-layer refresh\n" + HEADER + "\nReplaces the contents of a "
      "hosted feature layer from an upstream source, with validation and a shrink guard "
      "**before** anything touches production. Schedule nightly via the **Tasks** pane."),
+    install_cell("agol-ops-notebooks"),
     ("code", """\
 from arcgis.gis import GIS
 
@@ -113,6 +137,7 @@ LAYER_QA = [
     ("md", "# Hosted layer QA\n" + HEADER + "\nRuns attribute QA against a hosted feature "
      "layer using the same rule engine as the ArcGIS Pro toolbox in the companion repo — "
      "one set of rules, every runtime."),
+    install_cell("arcgis-qa-toolbox"),
     ("code", """\
 from arcgis.gis import GIS
 

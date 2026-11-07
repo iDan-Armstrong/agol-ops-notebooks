@@ -32,11 +32,15 @@ Design choices worth a reviewer's attention:
 
 ## Deploy
 
-1. `pip install -e .` into the notebook runtime (or attach `src/agolops` via the
-   notebook workspace; for the QA notebook also install `qacore` from the companion repo).
-2. Add each `.ipynb` as a Notebook item (ArcGIS Online → Notebooks → Add).
-3. Fill in the `REPLACE_WITH_ITEM_ID` constants.
+1. Add each `.ipynb` as a Notebook item (Content, then New item, then the file).
+2. Fill in the `REPLACE_WITH_ITEM_ID` constants.
+3. Run it once. The first code cell installs the tested packages from this repo (and,
+   for the QA notebook, `qacore` from the companion repo). It installs the GitHub zip
+   archive because the hosted runtime has no `git`.
 4. Schedule under the notebook's **Tasks** pane per the table above.
+
+The content audit and the hosted layer QA were run in a live ArcGIS Online org
+(Standard runtime 14.0) with this install step, from the GitHub zip archive.
 
 ## Develop
 
